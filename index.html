@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giveaway Support</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    #textInput, #excludedUsers {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    #excludedUsers {
+      margin-bottom: 20px;
+    }
+
+    #output {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    #output strong {
+      display: block;
+      margin-bottom: 10px;
+    }
+   
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <textarea id="textInput" placeholder="Paste text here"></textarea>
+  <input type="text" id="excludedUsers" placeholder="Excluded usernames (comma-separated)">
+  <button onclick="scanUsernames()">Scan Usernames</button>
+  <div id="output"></div>
+
+  <script>
+    function scanUsernames() {
+      const inputText = document.getElementById('textInput').value;
+      const excludedUsernames = document.getElementById('excludedUsers').value.split(',').map(username => username.trim());
+      const regexPattern = /@(\S+)/g;
+      const matches = inputText.match(regexPattern);
+
+      if (matches && matches.length > 0) {
+        const filteredMatches = matches.filter(match => !excludedUsernames.includes(match.slice(1)));
+        if (filteredMatches.length > 0) {
+          const outputDiv = document.getElementById('output');
+          outputDiv.innerHTML = '<strong>Text following @:</strong><br>' + filteredMatches.map(match => match.slice(1)).join('<br>');
+        } else {
+          alert('No valid usernames found after exclusion.');
+        }
+      } else {
+        alert('No usernames found.');
+      }
+    }
+  </script>
+</body>
+</html>
