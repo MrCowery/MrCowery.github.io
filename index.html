@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giveaway Support</title>
+  <title>Username Scanner</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
     }
 
     #textInput, #excludedUsers {
-      width: 100%;
+      width: calc(100% - 20px);
       padding: 10px;
       margin-bottom: 10px;
       border: 1px solid #ccc;
@@ -47,6 +47,12 @@
     button:hover {
       background-color: #0056b3;
     }
+
+    @media (max-width: 600px) {
+      #textInput, #excludedUsers {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -59,11 +65,11 @@
     function scanUsernames() {
       const inputText = document.getElementById('textInput').value;
       const excludedUsernames = document.getElementById('excludedUsers').value.split(',').map(username => username.trim());
-      const regexPattern = /@(\S+)/g;
+      const regexPattern = /@(\S+)/gi;  // gi for global and case-insensitive
       const matches = inputText.match(regexPattern);
 
       if (matches && matches.length > 0) {
-        const filteredMatches = matches.filter(match => !excludedUsernames.includes(match.slice(1)));
+        const filteredMatches = matches.filter(match => !excludedUsernames.includes(match.slice(1).toLowerCase()));
         if (filteredMatches.length > 0) {
           const outputDiv = document.getElementById('output');
           outputDiv.innerHTML = '<strong>Text following @:</strong><br>' + filteredMatches.map(match => match.slice(1)).join('<br>');
